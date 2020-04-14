@@ -8517,7 +8517,7 @@ div#UploadDialog {
 
 .btn-scroll {
   position: fixed;
-  right: 0px;
+  right: 20px;
   bottom: 20px;
   z-index: 999; }
 
@@ -8532,20 +8532,10 @@ div#UploadDialog {
 
 .MultiQuoteButton {
   display: inline-block; }
-
-span.form-check {
-  padding: 0px; }
-
-span.form-check > input[type="radio"] {
-  margin: 8px -5px 7px 0px;
-  display: block;
-  float: left; }
-
-span.form-check > label {
-  margin-right: 5px;
-  margin-left: 5px;
-  padding: 0px 5px 0px 10px;
-  display: block; }
+  .MultiQuoteButton label {
+    margin-top: -1px; }
+  .MultiQuoteButton .fa-stack {
+    margin-top: -2px; }
 
 .list-inline {
   margin: 0; }

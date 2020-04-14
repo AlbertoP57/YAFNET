@@ -34,6 +34,7 @@ namespace YAF.Controls
     using YAF.Configuration;
     using YAF.Core;
     using YAF.Core.BaseControls;
+    using YAF.Core.Context;
     using YAF.Core.Extensions;
     using YAF.Core.Model;
     using YAF.Core.Utilities;
@@ -145,11 +146,20 @@ namespace YAF.Controls
                         currentRow["LastForumAccess"].ToType<DateTime?>() ?? DateTimeHelper.SqlDbMinTime(),
                         currentRow["LastTopicAccess"].ToType<DateTime?>() ?? DateTimeHelper.SqlDbMinTime());
 
+                var topicsIcon = new Icon
+                                          {
+                                              IconName = "comment",
+                                              IconStackName = "comment",
+                                              IconStackType = "fa-inverse",
+                                              IconStackSize = "fa-1x",
+                                              IconType = DateTime.Parse(currentRow["LastPosted"].ToString()) > lastRead ? "text-success" : "text-secondary"
+                };
+
                 postIcon.Controls.Add(
                     new Literal
                     {
                         Text = 
-                                $"<span class=\"fa-stack\"><i class=\"fas fa-comment fa-stack-2x {(DateTime.Parse(currentRow["LastPosted"].ToString()) > lastRead ? "text-success" : "text-secondary")}\"></i><i class=\"fas fa-comment fa-stack-1x fa-inverse\"></i></span>"
+                                topicsIcon.RenderToString()
                     });
             }
 

@@ -27,6 +27,7 @@ namespace YAF.Core.Utilities
 
     using YAF.Configuration;
     using YAF.Core;
+    using YAF.Core.Context;
     using YAF.Core.Context.Start;
     using YAF.Types;
     using YAF.Types.Extensions;
@@ -720,7 +721,7 @@ function blurTextBox(txtTitleId, id, isAlbum) {{
         {
             return $@"{Config.JQueryAlias}(document).ready(function() {{
                       var yafCKEditor = {Config.JQueryAlias}(""#{editorId}"").ckeditor({{
-                          extraPlugins: ""bbcode,mentions,highlight,bbcodeselector,syntaxhighlight,emoji,wordcount,autolink,albumsbrowser,attachments,quote"",
+                          extraPlugins: ""bbcode,mentions,highlight,bbcodeselector,syntaxhighlight,emoji,wordcount,autolink,albumsbrowser,attachments,quote,codemirror"",
                           removePlugins: 'bidi,dialogadvtab,div,filebrowser,flash,format,forms,horizontalrule,iframe,liststyle,pagebreak,showborders,stylescombo,table,tabletools,templates',
 		                  toolbar: [{toolbar}],
 		                  entities_greek: false,
@@ -734,13 +735,10 @@ function blurTextBox(txtTitleId, id, isAlbum) {{
                           {{
                               saveDetectionSelectors: ""a[id*='_PostReply'],a[id*='Cancel'],a[id*='_Preview']""
                           }},
+                          codemirror: {{mode: ""bbcode"",  theme: ""monokai""}},
                           wordcount:
                           {{
-                              maxCharCount: {maxCharacters},
-                              showParagraphs: false,
-                              showWordCount: false,
-                              showCharCount: true,
-		                  	  countHTML: true
+                              maxCharCount: {maxCharacters},showParagraphs: false,showWordCount: false,showCharCount: true,countHTML: true
                           }},
 		                  mentions: [ {{ feed:  CKEDITOR.basePath.replace('Scripts/ckeditor/', '') + 'resource.ashx?users={{encodedQuery}}',
                                          itemTemplate: '<li data-id=""{{id}}""><i class=""fas fa-user pr-1""></i><strong class=""username"">{{name}}</strong></li>',
@@ -795,24 +793,20 @@ function blurTextBox(txtTitleId, id, isAlbum) {{
         {
             return $@"{Config.JQueryAlias}(document).ready(function() {{
                       var yafCKEditor = {Config.JQueryAlias}(""#{editorId}"").ckeditor({{
-                          extraPlugins: ""bbcode,mentions,wordcount,autolink,quote"",
+                          extraPlugins: ""bbcode,mentions,wordcount,autolink,quote,codemirror"",
                           removePlugins: 'autosave,bidi,dialogadvtab,div,filebrowser,flash,format,forms,horizontalrule,iframe,liststyle,pagebreak,showborders,stylescombo,table,tabletools,templates',
 		                  toolbar: [{toolbar}],
 		                  entities_greek: false,
                           entities_latin: false,
                           language: '{editorLanguage}',
                           disableObjectResizing: true,
-		                  fontSize_sizes: ""30/30%;50/50%;100/100%;120/120%;150/150%;200/200%;300/300%"",
 		                  forcePasteAsPlainText: true,
 		                  contentsCss: [""{themeCssUrl}"", ""{forumCssUrl}""],
                           wordcount:
                           {{
-                              maxCharCount: {maxCharacters},
-                              showParagraphs: false,
-                              showWordCount: false,
-                              showCharCount: true,
-		                  	  countHTML: true
+                              maxCharCount: {maxCharacters},showParagraphs: false,showWordCount: false,showCharCount: true,countHTML: true
                           }},
+                          codemirror: {{mode: ""bbcode"",  theme: ""monokai""}},
 		                  mentions: [ {{ feed:  CKEDITOR.basePath.replace('Scripts/ckeditor/', '') + 'resource.ashx?users={{encodedQuery}}',
                                          itemTemplate: '<li data-id=""{{id}}""><i class=""fas fa-user pr-1""></i><strong class=""username"">{{name}}</strong></li>',
 		                                 outputTemplate: '@[userlink]{{name}}[/userlink]'

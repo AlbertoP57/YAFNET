@@ -30,7 +30,8 @@ namespace YAF.Pages.Admin
     using System.Data;
 
     using YAF.Configuration;
-    using YAF.Core;
+    using YAF.Core.BasePages;
+    using YAF.Core.Context;
     using YAF.Core.Model;
     using YAF.Core.UsersRoles;
     using YAF.Core.Utilities;
@@ -130,7 +131,7 @@ namespace YAF.Pages.Admin
 
             var header = string.Format(this.GetText("ADMIN_EDITUSER", "TITLE"), userName);
 
-            this.Header.Text = this.Header2.Text = header;
+            this.Header.Text = this.IconHeader.Text = header;
 
             // current page label (no link)
             this.PageLinks.AddLink(

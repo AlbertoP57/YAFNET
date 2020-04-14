@@ -30,6 +30,7 @@ namespace YAF.Core.Tasks
     using System.Threading;
 
     using YAF.Configuration;
+    using YAF.Core.Context;
     using YAF.Core.Model;
     using YAF.Types.Constants;
     using YAF.Types.Extensions;
@@ -152,9 +153,8 @@ namespace YAF.Core.Tasks
                 }
             }
 
-            var updateIndex = (lastSend == DateTime.MinValue)
-                            || (lastSend < DateTime.Now.AddHours(-sendEveryXHours)
-                            && DateTime.Now < DateTime.Today.AddHours(6));
+            var updateIndex = lastSend < DateTime.Now.AddHours(-sendEveryXHours)
+                             && DateTime.Now < DateTime.Today.AddHours(6);
 
             if (!updateIndex)
             {

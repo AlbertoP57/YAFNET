@@ -33,15 +33,6 @@ namespace YAF.Controls
         protected global::System.Web.UI.WebControls.PlaceHolder InformationPlaceHolder;
 
         /// <summary>
-        /// ActiveUsersLabel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::YAF.Web.Controls.LocalizedLabel ActiveUsersLabel;
-
-        /// <summary>
         /// ActiveUserCount control.
         /// </summary>
         /// <remarks>
@@ -78,15 +69,6 @@ namespace YAF.Controls
         protected global::System.Web.UI.WebControls.PlaceHolder RecentUsersPlaceHolder;
 
         /// <summary>
-        /// RecentUsersLabel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::YAF.Web.Controls.LocalizedLabel RecentUsersLabel;
-
-        /// <summary>
         /// RecentUsers control.
         /// </summary>
         /// <remarks>
@@ -111,6 +93,6 @@ namespace YAF.Controls
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Web.Controls.MostActiveUsers MostActiveList;
+        protected global::YAF.Controls.MostActiveUsers MostActiveList;
     }
 }

@@ -32,7 +32,9 @@ namespace YAF.Pages
     using System.Web.UI.WebControls;
 
     using YAF.Configuration;
-    using YAF.Core;
+    using YAF.Core.BaseModules;
+    using YAF.Core.BasePages;
+    using YAF.Core.Context;
     using YAF.Core.Extensions;
     using YAF.Core.Helpers;
     using YAF.Core.Model;
@@ -249,6 +251,7 @@ namespace YAF.Pages
             }
 
             this.forumEditor = ForumEditorHelper.GetCurrentForumEditor();
+            this.forumEditor.MaxCharacters = this.PageContext.BoardSettings.MaxPostSize;
 
             this.EditorLine.Controls.Add(this.forumEditor);
 
@@ -361,6 +364,22 @@ namespace YAF.Pages
                 this.tr_captcha2.Visible = true;
             }
 
+            // enable similar topics search
+            this.TopicSubjectTextBox.CssClass += " searchSimilarTopics";
+
+            // form user is only for "Guest"
+            this.From.Text = this.Get<IUserDisplayName>().GetName(this.PageContext.PageUserID);
+            if (this.User != null)
+            {
+                this.FromRow.Visible = false;
+            }
+        }
+
+        /// <summary>
+        /// Create the Page links.
+        /// </summary>
+        protected override void CreatePageLinks()
+        {
             if (this.PageContext.Settings.LockedForum == 0)
             {
                 this.PageLinks.AddRoot();
@@ -373,16 +392,6 @@ namespace YAF.Pages
 
             // add the "New Topic" page link last...
             this.PageLinks.AddLink(this.GetText("NEWTOPIC"));
-
-            // enable similar topics search
-            this.TopicSubjectTextBox.CssClass += " searchSimilarTopics";
-
-            // form user is only for "Guest"
-            this.From.Text = this.Get<IUserDisplayName>().GetName(this.PageContext.PageUserID);
-            if (this.User != null)
-            {
-                this.FromRow.Visible = false;
-            }
         }
 
         /// <summary>
@@ -520,22 +529,14 @@ namespace YAF.Pages
                             this.Logger.Log(
                                 this.PageContext.PageUserID,
                                 "Spam Message Detected",
-                                string
-                                    .Format(
-                                        "Spam Check detected possible SPAM ({1}) posted by User: {0}, it was flagged as unapproved post.",
-                                        this.PageContext.IsGuest ? this.From.Text : this.PageContext.PageUserName,
-                                            spamResult),
+                                $"Spam Check detected possible SPAM ({spamResult}) posted by User: {(this.PageContext.IsGuest ? this.From.Text : this.PageContext.PageUserName)}, it was flagged as unapproved post.",
                                 EventLogTypes.SpamMessageDetected);
                             break;
                         case 2:
                             this.Logger.Log(
                                 this.PageContext.PageUserID,
                                 "Spam Message Detected",
-                                string
-                                    .Format(
-                                        "Spam Check detected possible SPAM ({1}) posted by User: {0}, post was rejected",
-                                        this.PageContext.IsGuest ? this.From.Text : this.PageContext.PageUserName,
-                                            spamResult),
+                                $"Spam Check detected possible SPAM ({spamResult}) posted by User: {(this.PageContext.IsGuest ? this.From.Text : this.PageContext.PageUserName)}, post was rejected",
                                 EventLogTypes.SpamMessageDetected);
                             this.PageContext.AddLoadMessage(this.GetText("SPAM_MESSAGE"), MessageTypes.danger);
                             return;
@@ -543,11 +544,7 @@ namespace YAF.Pages
                             this.Logger.Log(
                                 this.PageContext.PageUserID,
                                 "Spam Message Detected",
-                                string
-                                    .Format(
-                                        "Spam Check detected possible SPAM ({1}) posted by User: {0}, user was deleted and banned",
-                                        this.PageContext.IsGuest ? this.From.Text : this.PageContext.PageUserName,
-                                            spamResult),
+                                $"Spam Check detected possible SPAM ({spamResult}) posted by User: {(this.PageContext.IsGuest ? this.From.Text : this.PageContext.PageUserName)}, user was deleted and banned",
                                 EventLogTypes.SpamMessageDetected);
 
                             var userIp =
@@ -583,10 +580,7 @@ namespace YAF.Pages
                             this.Logger.Log(
                                 this.PageContext.PageUserID,
                                 "Spam Message Detected",
-                                string.Format(
-                                    "Spam Check detected possible SPAM ({1}) posted by User: {0}",
-                                    this.PageContext.IsGuest ? this.From.Text : this.PageContext.PageUserName,
-                                        spamResult),
+                                $"Spam Check detected possible SPAM ({spamResult}) posted by User: {(this.PageContext.IsGuest ? this.From.Text : this.PageContext.PageUserName)}",
                                 EventLogTypes.SpamMessageDetected);
                             break;
                         case 1:
@@ -595,22 +589,14 @@ namespace YAF.Pages
                             this.Logger.Log(
                                 this.PageContext.PageUserID,
                                 "Spam Message Detected",
-                                string
-                                    .Format(
-                                        "Spam Check detected possible SPAM ({1}) posted by User: {0}, it was flagged as unapproved post.",
-                                        this.PageContext.IsGuest ? this.From.Text : this.PageContext.PageUserName,
-                                            spamResult),
+                                $"Spam Check detected possible SPAM ({spamResult}) posted by User: {(this.PageContext.IsGuest ? this.From.Text : this.PageContext.PageUserName)}, it was flagged as unapproved post.",
                                 EventLogTypes.SpamMessageDetected);
                             break;
                         case 2:
                             this.Logger.Log(
                                 this.PageContext.PageUserID,
                                 "Spam Message Detected",
-                                string
-                                    .Format(
-                                        "Spam Check detected possible SPAM ({1}) posted by User: {0}, post was rejected",
-                                        this.PageContext.IsGuest ? this.From.Text : this.PageContext.PageUserName,
-                                            spamResult),
+                                $"Spam Check detected possible SPAM ({spamResult}) posted by User: {(this.PageContext.IsGuest ? this.From.Text : this.PageContext.PageUserName)}, post was rejected",
                                 EventLogTypes.SpamMessageDetected);
                             this.PageContext.AddLoadMessage(this.GetText("SPAM_MESSAGE"), MessageTypes.danger);
                             return;
@@ -618,11 +604,7 @@ namespace YAF.Pages
                             this.Logger.Log(
                                 this.PageContext.PageUserID,
                                 "Spam Message Detected",
-                                string
-                                    .Format(
-                                        "Spam Check detected possible SPAM ({1}) posted by User: {0}, user was deleted and banned",
-                                        this.PageContext.IsGuest ? this.From.Text : this.PageContext.PageUserName,
-                                            spamResult),
+                                $"Spam Check detected possible SPAM ({spamResult}) posted by User: {(this.PageContext.IsGuest ? this.From.Text : this.PageContext.PageUserName)}, user was deleted and banned",
                                 EventLogTypes.SpamMessageDetected);
 
                             var userIp =

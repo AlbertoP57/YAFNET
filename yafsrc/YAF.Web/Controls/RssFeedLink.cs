@@ -115,12 +115,12 @@ namespace YAF.Web.Controls
                 new ThemeButton
                     {
                         CssClass = "dropdown-item",
-                        Type = ButtonAction.None,
+                        Type = ButtonStyle.None,
                         Icon = "rss",
                         Text = this.GetText("ATOMFEED"),
                         NavigateUrl = BuildLink.GetLink(
                             ForumPages.RssTopic,
-                            "pg={0}&ft={1}{2}",
+                            "feed={0}&type={1}{2}",
                             this.FeedType.ToInt(),
                             0,
                             this.AdditionalParameters.IsNotSet() ? string.Empty : $"&{this.AdditionalParameters}")
@@ -133,12 +133,12 @@ namespace YAF.Web.Controls
                 new ThemeButton
                     {
                         CssClass = "dropdown-item",
-                        Type = ButtonAction.None,
+                        Type = ButtonStyle.None,
                         Icon = "rss-square",
                         Text = this.GetText("RSSFEED"),
                         NavigateUrl = BuildLink.GetLink(
                             ForumPages.RssTopic,
-                            "pg={0}&ft={1}{2}",
+                            "feed={0}&type={1}{2}",
                             this.FeedType.ToInt(),
                             1,
                             this.AdditionalParameters.IsNotSet()

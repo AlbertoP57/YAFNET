@@ -31,7 +31,7 @@ namespace YAF.Pages.Admin
     using System.Web;
     using System.Web.UI.WebControls;
 
-    using YAF.Core;
+    using YAF.Core.BasePages;
     using YAF.Core.Extensions;
     using YAF.Core.Model;
     using YAF.Core.Tasks;
@@ -111,7 +111,7 @@ namespace YAF.Pages.Admin
             }
             else
             {
-                this.ForumNameTitle.Text = forum.Name;
+                this.IconHeader.Text = $"{this.GetText("HEADER1")}: <strong>{forum.Name}</strong>";
 
                 // populate parent forums list with forums according to selected category
                 this.BindParentList();

@@ -33,7 +33,7 @@ namespace YAF.Pages.Admin
     using System.Web;
 
     using YAF.Configuration;
-    using YAF.Core;
+    using YAF.Core.BasePages;
     using YAF.Core.Extensions;
     using YAF.Core.Model;
     using YAF.Types;
@@ -220,7 +220,9 @@ namespace YAF.Pages.Admin
         {
             if (!this.Get<HttpRequestBase>().QueryString.Exists("c"))
             {
-                this.LocalizedLabel1.LocalizedTag = this.LocalizedLabel2.LocalizedTag = "NEW_CATEGORY";
+                this.LocalizedLabel2.LocalizedTag = "NEW_CATEGORY";
+
+                this.IconHeader.Text = this.GetText("NEW_CATEGORY");
                     
                 // Currently creating a New Category, and auto fill the Category Sort Order + 1
                 var sortOrder = 1;
@@ -250,7 +252,9 @@ namespace YAF.Pages.Admin
             this.Name.Text = category.Name;
             this.SortOrder.Text = category.SortOrder.ToString();
 
-            this.CategoryNameTitle.Text = this.Label1.Text = this.Name.Text;
+            this.IconHeader.Text = $"{this.GetText("ADMIN_EDITCATEGORY", "HEADER")} <strong>{this.Name.Text}</strong>";
+
+            this.Label1.Text = this.Name.Text;
 
             var item = this.CategoryImages.Items.FindByText(category.CategoryImage);
 

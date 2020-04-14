@@ -35,11 +35,11 @@ namespace YAF.Web.ReCAPTCHA
     using ServiceStack;
 
     using YAF.Core;
+    using YAF.Core.Context;
     using YAF.Core.Extensions;
     using YAF.Types;
     using YAF.Types.Extensions;
     using YAF.Types.Interfaces;
-    using YAF.Utils.Extensions;
 
     #endregion
 

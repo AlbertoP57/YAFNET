@@ -30,6 +30,7 @@ namespace YAF.Pages.Admin
     using System.Web.UI.WebControls;
 
     using YAF.Core;
+    using YAF.Core.BasePages;
     using YAF.Core.Helpers;
     using YAF.Core.Utilities;
     using YAF.Types;
@@ -136,20 +137,13 @@ namespace YAF.Pages.Admin
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         protected void RecoveryModeClick([NotNull] object sender, [NotNull] EventArgs e)
         {
-            var recoveryMode = string.Empty;
-
-            switch (this.RadioButtonList1.SelectedIndex)
-            {
-                case 0:
-                    recoveryMode = "FULL";
-                    break;
-                case 1:
-                    recoveryMode = "SIMPLE";
-                    break;
-                case 2:
-                    recoveryMode = "BULK_LOGGED";
-                    break;
-            }
+            var recoveryMode = this.RadioButtonList1.SelectedIndex switch
+                {
+                    0 => "FULL",
+                    1 => "SIMPLE",
+                    2 => "BULK_LOGGED",
+                    _ => string.Empty
+                };
 
             this.txtIndexStatistics.Text = this.Get<IDbFunction>().ChangeRecoveryMode(recoveryMode);
         }

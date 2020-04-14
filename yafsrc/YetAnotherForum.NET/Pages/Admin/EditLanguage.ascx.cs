@@ -38,7 +38,8 @@ namespace YAF.Pages.Admin
     using System.Xml;
     using System.Xml.XPath;
 
-    using YAF.Core;
+    using YAF.Core.BasePages;
+    using YAF.Core.Context;
     using YAF.Core.Utilities;
     using YAF.Types;
     using YAF.Types.Constants;
@@ -72,6 +73,11 @@ namespace YAF.Pages.Admin
         ///   Xml File Name of Current Language
         /// </summary>
         private string xmlFile;
+
+        /// <summary>
+        /// The current page name.
+        /// </summary>
+        private string pageName;
 
         /// <summary>
         ///   The translations.
@@ -190,7 +196,9 @@ namespace YAF.Pages.Admin
 
             this.dDLPages.Items.FindByText("DEFAULT").Selected = true;
 
-            this.lblPageName.Text = "DEFAULT";
+            this.pageName = "DEFAULT";
+
+            this.IconHeader.Text = $"{this.GetText("ADMIN_EDITLANGUAGE", "HEADER")} {this.pageName}";
 
             if (this.update)
             {
@@ -327,7 +335,9 @@ namespace YAF.Pages.Admin
 
             this.SaveLanguageFile();
 
-            this.lblPageName.Text = this.dDLPages.SelectedValue;
+            this.pageName = this.dDLPages.SelectedValue;
+
+            this.IconHeader.Text = $"{this.GetText("ADMIN_EDITLANGUAGE", "HEADER")} {this.pageName}";
 
             this.grdLocals.DataSource =
                 this.translations.FindAll(check => check.PageName.Equals(this.dDLPages.SelectedValue));
@@ -529,7 +539,7 @@ namespace YAF.Pages.Admin
                         var lblResourceName = item.FindControlAs<Label>("lblResourceName");
 
                         this.translations.Find(
-                                check => check.PageName.Equals(this.lblPageName.Text)
+                                check => check.PageName.Equals(this.pageName)
                                          && check.ResourceName.Equals(lblResourceName.Text)).LocalizedValue =
                             txtLocalized.Text;
                     });

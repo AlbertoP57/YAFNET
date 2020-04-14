@@ -33,6 +33,7 @@ namespace YAF.Modules
 
     using YAF.Configuration;
     using YAF.Core;
+    using YAF.Core.Context;
     using YAF.Types;
     using YAF.Types.Attributes;
     using YAF.Types.Extensions;
@@ -113,14 +114,14 @@ namespace YAF.Modules
                 ScriptManager.ScriptResourceMapping.AddDefinition(
                     "jquery",
                     new ScriptResourceDefinition
-                    {
-                        Path = jqueryUrl,
-                        DebugPath = BoardInfo.GetURLToScripts($"jquery-{Config.JQueryVersion}.js"),
-                        CdnPath = $"http://ajax.aspnetcdn.com/ajax/jQuery/jquery-{Config.JQueryVersion}.min.js",
-                        CdnDebugPath = $"http://ajax.aspnetcdn.com/ajax/jQuery/jquery-{Config.JQueryVersion}.js",
-                        CdnSupportsSecureConnection = true/*,
-                            LoadSuccessExpression = "window.jQuery"*/
-                    });
+                        {
+                            Path = jqueryUrl,
+                            DebugPath = BoardInfo.GetURLToScripts($"jquery-{Config.JQueryVersion}.js"),
+                            CdnPath = $"//ajax.aspnetcdn.com/ajax/jQuery/jquery-{Config.JQueryVersion}.min.js",
+                            CdnDebugPath = $"//ajax.aspnetcdn.com/ajax/jQuery/jquery-{Config.JQueryVersion}.js",
+                            CdnSupportsSecureConnection = BoardContext.Current.Get<HttpRequestBase>().IsSecureConnection,
+                            LoadSuccessExpression = "window.jQuery"
+                        });
 
                 BoardContext.Current.PageElements.AddScriptReference("jquery");
             }

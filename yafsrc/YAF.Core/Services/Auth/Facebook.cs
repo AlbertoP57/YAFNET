@@ -34,12 +34,14 @@ namespace YAF.Core.Services.Auth
     using ServiceStack;
 
     using YAF.Configuration;
+    using YAF.Core.Context;
     using YAF.Core.Model;
     using YAF.Core.UsersRoles;
     using YAF.Types.Constants;
     using YAF.Types.EventProxies;
     using YAF.Types.Extensions;
     using YAF.Types.Interfaces;
+    using YAF.Types.Interfaces.Auth;
     using YAF.Types.Interfaces.Events;
     using YAF.Types.Models;
     using YAF.Types.Objects;
@@ -192,15 +194,12 @@ namespace YAF.Core.Services.Auth
                     return CreateFacebookUser(facebookUser, userGender, out message);
                 }
 
-                switch (facebookUser.Gender)
-                {
-                    case "male":
-                        userGender = 1;
-                        break;
-                    case "female":
-                        userGender = 2;
-                        break;
-                }
+                userGender = facebookUser.Gender switch
+                    {
+                        "male" => 1,
+                        "female" => 2,
+                        _ => userGender
+                    };
 
                 // Create User if not exists?!
                 return CreateFacebookUser(facebookUser, userGender, out message);

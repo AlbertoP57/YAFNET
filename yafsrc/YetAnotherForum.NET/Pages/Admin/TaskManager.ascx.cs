@@ -30,6 +30,7 @@ namespace YAF.Pages.Admin
     using System.Web.UI.WebControls;
 
     using YAF.Core;
+    using YAF.Core.BasePages;
     using YAF.Types;
     using YAF.Types.Constants;
     using YAF.Types.Interfaces;
@@ -79,9 +80,6 @@ namespace YAF.Pages.Admin
         /// </summary>
         protected void BindData()
         {
-            this.lblTaskCount.Text = string
-                .Format(this.GetText("ADMIN_TASKMANAGER", "HEADER"), this.Get<ITaskModuleManager>().TaskCount.ToString());
-
             this.taskRepeater.DataSource = this.Get<ITaskModuleManager>().TaskManagerSnapshot;
             this.taskRepeater.DataBind();
         }
