@@ -11,7 +11,7 @@ namespace YAF.Pages
 {
 
 
-    public partial class Xmpp
+    public partial class RulesAndPrivacy
     {
 
         /// <summary>
@@ -24,30 +24,48 @@ namespace YAF.Pages
         protected global::YAF.Web.Controls.PageLinks PageLinks;
 
         /// <summary>
-        /// LocalizedLabel6 control.
+        /// LocalizedLabel1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Web.Controls.LocalizedLabel LocalizedLabel6;
+        protected global::YAF.Web.Controls.LocalizedLabel LocalizedLabel1;
 
         /// <summary>
-        /// Alert control.
+        /// RulesText control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::YAF.Web.Controls.Alert Alert;
+        protected global::YAF.Web.Controls.LocalizedLabel RulesText;
 
         /// <summary>
-        /// NotifyLabel control.
+        /// Footer control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label NotifyLabel;
+        protected global::System.Web.UI.WebControls.Panel Footer;
+
+        /// <summary>
+        /// Accept control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::YAF.Web.Controls.ThemeButton Accept;
+
+        /// <summary>
+        /// Cancel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::YAF.Web.Controls.ThemeButton Cancel;
     }
 }
