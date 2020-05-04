@@ -143,7 +143,7 @@ namespace YAF.Pages
 
             this.GetRepository<Topic>().Delete(this.PageContext.PageTopicID, true);
 
-            BuildLink.Redirect(ForumPages.topics, "f={0}", this.PageContext.PageForumID);
+            BuildLink.Redirect(ForumPages.Topics, "f={0}", this.PageContext.PageForumID);
         }
 
         /// <summary>
@@ -459,8 +459,7 @@ namespace YAF.Pages
 
                 var topicSubject = this.Get<IBadWordReplace>().Replace(this.HtmlEncode(this.topic.TopicName));
 
-                if (this.topic.Description.IsSet()
-                    && yafBoardSettings.EnableTopicDescription)
+                if (this.topic.Description.IsSet())
                 {
                     this.TopicTitle.Text =
                         $"{topicSubject} - <em>{this.Get<IBadWordReplace>().Replace(this.HtmlEncode(this.topic.Description))}</em>";
@@ -545,7 +544,7 @@ namespace YAF.Pages
                 this.PageLinks.AddRoot();
                 this.PageLinks.AddLink(
                     this.PageContext.PageCategoryName,
-                    BuildLink.GetLink(ForumPages.forum, "c={0}", this.PageContext.PageCategoryID));
+                    BuildLink.GetLink(ForumPages.Board, "c={0}", this.PageContext.PageCategoryID));
             }
 
             this.PageLinks.AddForum(this.PageContext.PageForumID);
@@ -797,7 +796,7 @@ namespace YAF.Pages
         {
             if (this.topic == null)
             {
-                BuildLink.Redirect(ForumPages.topics, "f={0}", this.PageContext.PageForumID);
+                BuildLink.Redirect(ForumPages.Topics, "f={0}", this.PageContext.PageForumID);
             }
 
             this.dataBound = true;
@@ -835,7 +834,7 @@ namespace YAF.Pages
                 this.IsPostBack || this.PageContext.IsCrawler ? 0 : 1,
                 showDeleted,
                 this.Get<BoardSettings>().UseStyledNicks,
-                !this.PageContext.IsGuest && this.Get<BoardSettings>().DisplayPoints,
+                !this.PageContext.IsGuest && this.Get<BoardSettings>().EnableUserReputation,
                 DateTimeHelper.SqlDbMinTime(),
                 System.DateTime.UtcNow,
                 DateTimeHelper.SqlDbMinTime(),
@@ -894,7 +893,7 @@ namespace YAF.Pages
                     this.IsPostBack || this.PageContext.IsCrawler ? 0 : 1,
                     showDeleted,
                     this.Get<BoardSettings>().UseStyledNicks,
-                    !this.PageContext.IsGuest && this.Get<BoardSettings>().DisplayPoints,
+                    !this.PageContext.IsGuest && this.Get<BoardSettings>().EnableUserReputation,
                     DateTimeHelper.SqlDbMinTime(),
                     System.DateTime.UtcNow,
                     DateTimeHelper.SqlDbMinTime(),

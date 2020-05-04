@@ -51,6 +51,8 @@ namespace YAF.Pages.Admin
     using YAF.Utils.Helpers;
     using YAF.Web.Extensions;
 
+    using ListItem = System.Web.UI.WebControls.ListItem;
+
     #endregion
 
     /// <summary>
@@ -84,15 +86,14 @@ namespace YAF.Pages.Admin
                 this.Theme.DataSource = themeData;
             }
 
-            this.Culture.DataSource = StaticDataHelper.Cultures().AsEnumerable()
-                .OrderBy(x => x.Field<string>("CultureNativeName")).CopyToDataTable();
+            this.Culture.DataSource = StaticDataHelper.Cultures().OrderBy(x => x.CultureNativeName);
 
             this.Culture.DataTextField = "CultureNativeName";
             this.Culture.DataValueField = "CultureTag";
 
             this.ShowTopic.DataSource = StaticDataHelper.TopicTimes();
-            this.ShowTopic.DataTextField = "TopicText";
-            this.ShowTopic.DataValueField = "TopicValue";
+            this.ShowTopic.DataTextField = "Name";
+            this.ShowTopic.DataValueField = "Value";
 
             this.BindData();
 
@@ -155,8 +156,6 @@ namespace YAF.Pages.Admin
             SetSelectedOnList(
                 ref this.DefaultNotificationSetting,
                 boardSettings.DefaultNotificationSetting.ToInt().ToString());
-
-            this.FileExtensionAllow.Checked = boardSettings.FileExtensionAreAllowed;
 
             this.NotificationOnUserRegisterEmailList.Text = boardSettings.NotificationOnUserRegisterEmailList;
             this.EmailModeratorsOnModeratedPost.Checked = boardSettings.EmailModeratorsOnModeratedPost;
@@ -222,7 +221,7 @@ namespace YAF.Pages.Admin
         /// </summary>
         protected override void CreatePageLinks()
         {
-            this.PageLinks.AddLink(this.Get<BoardSettings>().Name, BuildLink.GetLink(ForumPages.forum));
+            this.PageLinks.AddLink(this.Get<BoardSettings>().Name, BuildLink.GetLink(ForumPages.Board));
             this.PageLinks.AddLink(
                 this.GetText("ADMIN_ADMIN", "Administration"),
                 BuildLink.GetLink(ForumPages.Admin_Admin));
@@ -241,12 +240,12 @@ namespace YAF.Pages.Admin
         {
             var languageFile = "english.xml";
 
-            var cultures = StaticDataHelper.Cultures().AsEnumerable()
-                .Where(c => c.Field<string>("CultureTag").Equals(this.Culture.SelectedValue));
+            var cultures = StaticDataHelper.Cultures()
+                .Where(c => c.CultureTag.Equals(this.Culture.SelectedValue));
 
             if (cultures.Any())
             {
-                languageFile = cultures.First().Field<string>("CultureFile");
+                languageFile = cultures.FirstOrDefault().CultureFile;
             }
 
             this.GetRepository<Board>().Save(
@@ -268,7 +267,6 @@ namespace YAF.Pages.Admin
 
             // allow null/empty as a mobile theme many not be desired.
             boardSettings.ShowTopicsDefault = this.ShowTopic.SelectedValue.ToType<int>();
-            boardSettings.FileExtensionAreAllowed = this.FileExtensionAllow.Checked;
             boardSettings.NotificationOnUserRegisterEmailList = this.NotificationOnUserRegisterEmailList.Text.Trim();
 
             boardSettings.EmailModeratorsOnModeratedPost = this.EmailModeratorsOnModeratedPost.Checked;
@@ -420,11 +418,10 @@ namespace YAF.Pages.Admin
 
             using (var dt = new DataTable("Files"))
             {
-                dt.Columns.Add("FileID", typeof(long));
                 dt.Columns.Add("FileName", typeof(string));
                 dt.Columns.Add("Description", typeof(string));
+                
                 var dr = dt.NewRow();
-                dr["FileID"] = 0;
                 dr["FileName"] =
                     BoardInfo.GetURLToContent("images/spacer.gif"); // use spacer.gif for Description Entry
                 dr["Description"] = this.GetText("BOARD_LOGO_SELECT");
@@ -434,21 +431,8 @@ namespace YAF.Pages.Admin
                     this.Get<HttpRequestBase>()
                         .MapPath($"{BoardInfo.ForumServerFileRoot}{BoardFolders.Current.Logos}"));
                 var files = dir.GetFiles("*.*");
-                long fileID = 1;
 
-                (from file in files
-                 let extension = file.Extension.ToLower()
-                 where extension == ".png" || extension == ".gif" || extension == ".jpg" || extension == ".svg"
-                 select file).ForEach(
-                    file =>
-                        {
-                            dr = dt.NewRow();
-                            dr["FileID"] = fileID++;
-                            dr["FileName"] =
-                                $"{BoardInfo.ForumClientFileRoot}{BoardFolders.Current.Logos}/{file.Name}";
-                            dr["Description"] = file.Name;
-                            dt.Rows.Add(dr);
-                        });
+                dt.AddImageFiles(files, BoardFolders.Current.Logos);
 
                 this.BoardLogo.DataSource = dt;
                 this.BoardLogo.DataValueField = "FileName";

@@ -28,13 +28,13 @@ namespace YAF.Controls
 
     using System;
     using System.Globalization;
+    using System.Linq;
     using System.Text.RegularExpressions;
     using System.Web;
 
     using FarsiLibrary.Utils;
 
     using YAF.Configuration;
-    using YAF.Core;
     using YAF.Core.BaseControls;
     using YAF.Core.Context;
     using YAF.Core.Extensions;
@@ -144,8 +144,6 @@ namespace YAF.Controls
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         protected void Page_Load([NotNull] object sender, [NotNull] EventArgs e)
         {
-            //this.Page.Form.DefaultButton = this.UpdateProfile.UniqueID;
-
             this.PageContext.QueryIDs = new QueryStringIDHelper("u");
 
             if (this.PageContext.CurrentForumPage.IsAdminPage && this.PageContext.IsAdmin && this.PageContext.QueryIDs.ContainsKey("u"))
@@ -338,12 +336,7 @@ namespace YAF.Controls
                 this.UserData.LanguageFile,
                 this.UserData.CultureUser,
                 this.UserData.ThemeFile,
-                null,
-                null,
-                null,
-                false,
-                this.UserData.IsActiveExcluded,
-                null);
+                this.UserData.IsActiveExcluded);
 
             // clear the cache for this user...)
             this.Get<IRaiseEvent>().Raise(new UpdateUserEvent(this.currentUserId));
@@ -485,13 +478,15 @@ namespace YAF.Controls
                 }
             }
 
-            if (this.UserData.Profile.Region.IsSet())
+            if (!this.UserData.Profile.Region.IsSet())
             {
-                var regionItem = this.Region.Items.FindByValue(this.UserData.Profile.Region.Trim());
-                if (regionItem != null)
-                {
-                    regionItem.Selected = true;
-                }
+                return;
+            }
+
+            var regionItem = this.Region.Items.FindByValue(this.UserData.Profile.Region.Trim());
+            if (regionItem != null)
+            {
+                regionItem.Selected = true;
             }
         }
 
@@ -569,7 +564,7 @@ namespace YAF.Controls
             var dt = StaticDataHelper.Region(country);
 
             // The first row is empty
-            if (dt.Rows.Count > 1)
+            if (dt.Any())
             {
                 this.Region.DataSource = dt;
                 this.Region.DataValueField = "Value";

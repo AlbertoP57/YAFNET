@@ -38,7 +38,7 @@ namespace YAF.Install
 
     using YAF.App_GlobalResources;
     using YAF.Configuration;
-    using YAF.Core;
+    
     using YAF.Core.BasePages;
     using YAF.Core.Context;
     using YAF.Core.Extensions;
@@ -432,7 +432,7 @@ namespace YAF.Install
             // done here...
             try
             {
-                this.Get<HttpResponseBase>().Redirect(BuildLink.GetLink(ForumPages.forum));
+                this.Get<HttpResponseBase>().Redirect(BuildLink.GetLink(ForumPages.Board));
             }
             catch (Exception)
             {

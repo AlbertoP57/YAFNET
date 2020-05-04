@@ -31,12 +31,12 @@ namespace YAF.Types.Constants
         /// <summary>
         /// The Forum page.
         /// </summary>
-        forum,
+        Board,
 
         /// <summary>
         /// The topics.
         /// </summary>
-        topics,
+        Topics,
 
         /// <summary>
         /// The Posts page.
@@ -219,7 +219,7 @@ namespace YAF.Types.Constants
         Cookies,
 
         /// <summary>
-        /// The Rules & Privacy page.
+        /// The Rules and Privacy page.
         /// </summary>
         RulesAndPrivacy,
 
@@ -531,6 +531,11 @@ namespace YAF.Types.Constants
         /// <summary>
         /// Digest Admin page
         /// </summary>
-        Admin_Digest
+        Admin_Digest,
+
+        /// <summary>
+        /// The Host Admin Web Profiler page.
+        /// </summary>
+        Admin_Profiler
     }
 }

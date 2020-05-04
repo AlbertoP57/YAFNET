@@ -30,7 +30,7 @@
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <OldToolsVersion>4.0</OldToolsVersion>
     <TargetFrameworkProfile />
     <UseIISExpress>true</UseIISExpress>
@@ -153,6 +153,7 @@
     <Reference Include="System.Drawing">
       <Name>System.Drawing</Name>
     </Reference>
+    <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.ServiceModel.Web" />
     <Reference Include="System.Web">
@@ -160,6 +161,8 @@
     </Reference>
     <Reference Include="System.Web.Abstractions" />
     <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml">
@@ -693,6 +696,13 @@
     <Compile Include="Pages\Admin\BBCode_Edit.ascx.designer.cs">
       <DependentUpon>BBCode_Edit.ascx</DependentUpon>
     </Compile>
+    <Compile Include="Pages\Admin\Profiler.ascx.cs">
+      <DependentUpon>Profiler.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Admin\Profiler.ascx.designer.cs">
+      <DependentUpon>Profiler.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Pages\Admin\Boards.ascx.designer.cs">
       <DependentUpon>Boards.ascx</DependentUpon>
     </Compile>
@@ -981,8 +991,8 @@
     <Compile Include="Pages\Error.ascx.designer.cs">
       <DependentUpon>Error.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Forum.ascx.designer.cs">
-      <DependentUpon>Forum.ascx</DependentUpon>
+    <Compile Include="Pages\Board.ascx.designer.cs">
+      <DependentUpon>Board.ascx</DependentUpon>
     </Compile>
     <Compile Include="Pages\Help.ascx.designer.cs">
       <DependentUpon>Help.ascx</DependentUpon>
@@ -2052,6 +2062,7 @@
     <Content Include="languages\estonian.xml" />
     <Content Include="Pages\Admin\BannedEmails.ascx" />
     <Content Include="Pages\Admin\BannedNames.ascx" />
+    <Content Include="Pages\Admin\Profiler.ascx" />
     <Content Include="Pages\Admin\Restore.ascx" />
     <Content Include="Pages\Admin\SpamLog.ascx" />
     <Content Include="Pages\Admin\PageAccessEdit.ascx" />
@@ -2170,7 +2181,7 @@
     <Content Include="Pages\EmailTopic.ascx" />
     <Content Include="controls\EmailDigest.ascx" />
     <Content Include="Pages\Error.ascx" />
-    <Content Include="Pages\Forum.ascx" />
+    <Content Include="Pages\Board.ascx" />
     <Content Include="Pages\Help.ascx" />
     <Content Include="Pages\Email.ascx" />
     <Content Include="Pages\Jabber.ascx" />
@@ -2746,7 +2757,7 @@
     </Content>
     <Content Include="Scripts\jquery.blockUI.js" />
     <Content Include="Scripts\jquery.bootstrap-touchspin.js" />
-    <Content Include="Scripts\jquery.FileUpload\canvas-to-blob.min.js" />
+    <Content Include="Scripts\jquery.FileUpload\canvas-to-blob.js" />
     <Content Include="Scripts\jquery.FileUpload\jquery.fileupload-audio.js" />
     <Content Include="Scripts\jquery.FileUpload\jquery.fileupload-image.js" />
     <Content Include="Scripts\jquery.FileUpload\jquery.fileupload-process.js" />
@@ -2760,7 +2771,7 @@
     <Content Include="Scripts\jquery.FileUpload\jquery.fileupload.js" />
     <Content Include="Scripts\jquery.FileUpload\jquery.iframe-transport.js" />
     <Content Include="Scripts\jquery.FileUpload\load-image.all.min.js" />
-    <Content Include="Scripts\jquery.FileUpload\tmpl.min.js" />
+    <Content Include="Scripts\jquery.FileUpload\tmpl.js" />
     <Content Include="Scripts\jquery.FileUpload\vendor\jquery.ui.widget.js" />
     <Content Include="Scripts\jquery.ForumAdminExtensions.js" />
     <Content Include="Scripts\jquery.ForumAdminExtensions.min.js">
@@ -2770,9 +2781,6 @@
       <DependentUpon>jquery.ForumExtensions.js</DependentUpon>
     </Content>
     <Content Include="Scripts\moment-with-locales.js" />
-    <Content Include="Scripts\moment-with-locales.min.js">
-      <DependentUpon>moment-with-locales.js</DependentUpon>
-    </Content>
     <Content Include="Scripts\jsdifflib.js" />
     <Content Include="Scripts\prism.js" />
     <Content Include="Scripts\select2.js" />
@@ -3116,8 +3124,8 @@
       <DependentUpon>Error.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Pages\Forum.ascx.cs">
-      <DependentUpon>Forum.ascx</DependentUpon>
+    <Compile Include="Pages\Board.ascx.cs">
+      <DependentUpon>Board.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Pages\Help.ascx.cs">
@@ -3687,7 +3695,7 @@ RD /S /Q "$(TargetDir)zh-TW\"</PostBuildEvent>
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
-      <UserProperties bundleconfig_1json__JSONSchema="" compilerconfig_1json__JSONSchema="" />
+      <UserProperties compilerconfig_1json__JSONSchema="" bundleconfig_1json__JSONSchema="" />
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="..\packages\MSBuildTasks.1.5.0.235\build\MSBuildTasks.targets" Condition="Exists('..\packages\MSBuildTasks.1.5.0.235\build\MSBuildTasks.targets')" />

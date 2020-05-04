@@ -235,7 +235,7 @@ namespace YAF.Pages
             this.Login1.DestinationPageUrl =
                 this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("ReturnUrl").IsSet()
                     ? this.HtmlEncode(this.Server.UrlDecode(this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("ReturnUrl")))
-                    : BuildLink.GetLink(ForumPages.forum);
+                    : BuildLink.GetLink(ForumPages.Board);
 
             // localize controls
             var rememberMe = this.Login1.FindControlAs<CheckBox>("RememberMe");
@@ -393,7 +393,7 @@ namespace YAF.Pages
                                 {
                                     try
                                     {
-                                        var twitterLoginUrl = SingleSignOnUser.GenerateLoginUrl(AuthService.twitter, true);
+                                        var twitterLoginUrl = this.Get<ISingeSignOnUser>().GenerateLoginUrl(AuthService.twitter, true);
 
                                         // Redirect the user to Twitter for authorization.
                                         twitterLogin.Attributes.Add("onclick", twitterLoginUrl);
@@ -438,7 +438,7 @@ namespace YAF.Pages
                                 {
                                     try
                                     {
-                                        var facebookLoginUrl = SingleSignOnUser.GenerateLoginUrl(AuthService.facebook, true);
+                                        var facebookLoginUrl = this.Get<ISingeSignOnUser>().GenerateLoginUrl(AuthService.facebook, true);
 
                                         // Redirect the user to Twitter for authorization.
                                         facebookLogin.Attributes.Add(
@@ -485,7 +485,7 @@ namespace YAF.Pages
                                 {
                                     try
                                     {
-                                        var googleLoginUrl = SingleSignOnUser.GenerateLoginUrl(AuthService.google, true);
+                                        var googleLoginUrl = this.Get<ISingeSignOnUser>().GenerateLoginUrl(AuthService.google, true);
 
                                         // Redirect the user to Twitter for authorization.
                                         googleLogin.Attributes.Add(
@@ -618,36 +618,22 @@ namespace YAF.Pages
                         twitterHolder.Visible = false;
                         googleHolder.Visible = false;
 
-                        switch (loginAuth)
-                        {
-                            case AuthService.twitter:
-                                {
-                                    this.Login1.DestinationPageUrl = SingleSignOnUser.GenerateLoginUrl(
-                                        AuthService.twitter,
-                                        false,
-                                        true);
-                                }
-
-                                break;
-                            case AuthService.facebook:
-                                {
-                                    this.Login1.DestinationPageUrl = SingleSignOnUser.GenerateLoginUrl(
-                                        AuthService.facebook,
-                                        false,
-                                        true);
-                                }
-
-                                break;
-                            case AuthService.google:
-                                {
-                                    this.Login1.DestinationPageUrl = SingleSignOnUser.GenerateLoginUrl(
-                                        AuthService.google,
-                                        false,
-                                        true);
-                                }
-
-                                break;
-                        }
+                        this.Login1.DestinationPageUrl = loginAuth switch
+                            {
+                                AuthService.twitter => this.Get<ISingeSignOnUser>().GenerateLoginUrl(
+                                    AuthService.twitter,
+                                    false,
+                                    true),
+                                AuthService.facebook => this.Get<ISingeSignOnUser>().GenerateLoginUrl(
+                                    AuthService.facebook,
+                                    false,
+                                    true),
+                                AuthService.google => this.Get<ISingeSignOnUser>().GenerateLoginUrl(
+                                    AuthService.google,
+                                    false,
+                                    true),
+                                _ => this.Login1.DestinationPageUrl
+                            };
                     }
 
                     break;

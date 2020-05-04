@@ -93,7 +93,7 @@ namespace YAF.Pages
         protected void Cancel_Click([NotNull] object sender, [NotNull] EventArgs e)
         {
             // new topic -- cancel back to forum
-            BuildLink.Redirect(ForumPages.topics, "f={0}", this.PageContext.PageForumID);
+            BuildLink.Redirect(ForumPages.Topics, "f={0}", this.PageContext.PageForumID);
         }
 
         /// <summary>
@@ -158,54 +158,6 @@ namespace YAF.Pages
                 this.PageContext.AddLoadMessage(this.GetText("GUEST_NAME_TOOLONG"), MessageTypes.warning);
 
                 this.From.Text = this.From.Text.Substring(100);
-                return false;
-            }
-
-            // Check if the topic name is not too long
-            if (this.PageContext.BoardSettings.MaxWordLength > 0
-                && this.TopicSubjectTextBox.Text.Trim()
-                    .AreAnyWordsOverMaxLength(this.PageContext.BoardSettings.MaxWordLength))
-            {
-                this.PageContext.AddLoadMessage(
-                    this.GetTextFormatted("TOPIC_NAME_WORDTOOLONG", this.PageContext.BoardSettings.MaxWordLength),
-                    MessageTypes.warning);
-
-                try
-                {
-                    this.TopicSubjectTextBox.Text =
-                        this.TopicSubjectTextBox.Text.Substring(this.PageContext.BoardSettings.MaxWordLength)
-                            .Substring(255);
-                }
-                catch (Exception)
-                {
-                    this.TopicSubjectTextBox.Text =
-                        this.TopicSubjectTextBox.Text.Substring(this.PageContext.BoardSettings.MaxWordLength);
-                }
-
-                return false;
-            }
-
-            // Check if the topic description words are not too long
-            if (this.PageContext.BoardSettings.MaxWordLength > 0
-                && this.TopicDescriptionTextBox.Text.Trim()
-                    .AreAnyWordsOverMaxLength(this.PageContext.BoardSettings.MaxWordLength))
-            {
-                this.PageContext.AddLoadMessage(
-                    this.GetTextFormatted("TOPIC_DESCRIPTION_WORDTOOLONG", this.PageContext.BoardSettings.MaxWordLength),
-                    MessageTypes.warning);
-
-                try
-                {
-                    this.TopicDescriptionTextBox.Text =
-                        this.TopicDescriptionTextBox.Text.Substring(this.PageContext.BoardSettings.MaxWordLength)
-                            .Substring(255);
-                }
-                catch (Exception)
-                {
-                    this.TopicDescriptionTextBox.Text =
-                        this.TopicDescriptionTextBox.Text.Substring(this.PageContext.BoardSettings.MaxWordLength);
-                }
-
                 return false;
             }
 
@@ -298,11 +250,6 @@ namespace YAF.Pages
                 return;
             }
 
-            if (this.PageContext.BoardSettings.EnableTopicDescription)
-            {
-                this.DescriptionRow.Visible = true;
-            }
-
             var normal = new ListItem(this.GetText("normal"), "0");
 
             normal.Attributes.Add(
@@ -385,7 +332,7 @@ namespace YAF.Pages
                 this.PageLinks.AddRoot();
                 this.PageLinks.AddLink(
                     this.PageContext.PageCategoryName,
-                    BuildLink.GetLink(ForumPages.forum, "c={0}", this.PageContext.PageCategoryID));
+                    BuildLink.GetLink(ForumPages.Board, "c={0}", this.PageContext.PageCategoryID));
             }
 
             this.PageLinks.AddForum(this.PageContext.PageForumID);
@@ -752,7 +699,7 @@ namespace YAF.Pages
                 }
 
                 // Tell user that his message will have to be approved by a moderator
-                var url = BuildLink.GetLink(ForumPages.topics, "f={0}", this.PageContext.PageForumID);
+                var url = BuildLink.GetLink(ForumPages.Topics, "f={0}", this.PageContext.PageForumID);
 
                 if (attachPollParameter.Length <= 0)
                 {

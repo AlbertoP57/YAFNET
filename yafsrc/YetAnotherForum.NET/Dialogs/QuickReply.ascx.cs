@@ -31,7 +31,6 @@ namespace YAF.Dialogs
     using System.Web;
 
     using YAF.Configuration;
-    using YAF.Core;
     using YAF.Core.BaseControls;
     using YAF.Core.BaseModules;
     using YAF.Core.Context;
@@ -408,7 +407,7 @@ namespace YAF.Dialogs
                             isPossibleSpamMessage);
                     }
 
-                    var url = BuildLink.GetLink(ForumPages.topics, "f={0}", this.PageContext.PageForumID);
+                    var url = BuildLink.GetLink(ForumPages.Topics, "f={0}", this.PageContext.PageForumID);
 
                     if (Config.IsRainbow)
                     {

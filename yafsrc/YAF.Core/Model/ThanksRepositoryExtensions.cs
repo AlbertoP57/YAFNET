@@ -232,6 +232,10 @@ namespace YAF.Core.Model
         public static string RemoveMessageThanks(
             this IRepository<Thanks> repository, [NotNull] int fromUserId, [NotNull] int messageId, [NotNull] bool useDisplayName)
         {
+            //repository.Delete(t => t.ThanksFromUserID == fromUserId & t.MessageID == messageId);
+
+           // BoardContext.Current.GetRepository<User>().GetById()
+
             IDbDataParameter parameterOutput = null;
 
             repository.SqlList(

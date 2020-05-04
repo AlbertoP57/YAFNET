@@ -38,8 +38,32 @@ namespace YAF.Core.Services
     /// <summary>
     /// Single Sign On User Class to handle Twitter and Facebook Logins
     /// </summary>
-    public class SingleSignOnUser
+    public class SingleSignOnUser : ISingeSignOnUser, IHaveServiceLocator
     {
+        #region Constructors and Destructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SingleSignOnUser"/> class.
+        /// </summary>
+        /// <param name="serviceLocator">
+        /// The service locator.
+        /// </param>
+        public SingleSignOnUser(IServiceLocator serviceLocator)
+        {
+            this.ServiceLocator = serviceLocator;
+        }
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Gets or sets ServiceLocator.
+        /// </summary>
+        public IServiceLocator ServiceLocator { get; set; }
+
+        #endregion
+
         /// <summary>
         /// Generates the oAUTH callback login URL.
         /// </summary>
@@ -49,28 +73,15 @@ namespace YAF.Core.Services
         /// <returns>
         /// Returns the login Url
         /// </returns>
-        public static string GenerateLoginUrl([NotNull] AuthService authService, [NotNull] bool generatePopUpUrl, [CanBeNull] bool connectCurrentUser = false)
+        public string GenerateLoginUrl([NotNull] AuthService authService, [NotNull] bool generatePopUpUrl, [CanBeNull] bool connectCurrentUser = false)
         {
-            switch (authService)
-            {
-                case AuthService.twitter:
-                    {
-                        return new Auth.Twitter().GenerateLoginUrl(generatePopUpUrl, connectCurrentUser);
-                    }
-
-                case AuthService.facebook:
-                    {
-                        return new Auth.Facebook().GenerateLoginUrl(generatePopUpUrl, connectCurrentUser);
-                    }
-
-                case AuthService.google:
-                    {
-                        return new Auth.Google().GenerateLoginUrl(generatePopUpUrl, connectCurrentUser);
-                    }
-
-                default:
-                    return string.Empty;
-            }
+            return authService switch
+                {
+                    AuthService.twitter => new Auth.Twitter().GenerateLoginUrl(generatePopUpUrl, connectCurrentUser),
+                    AuthService.facebook => new Auth.Facebook().GenerateLoginUrl(generatePopUpUrl, connectCurrentUser),
+                    AuthService.google => new Auth.Google().GenerateLoginUrl(generatePopUpUrl, connectCurrentUser),
+                    _ => string.Empty
+                };
         }
 
         /// <summary>
@@ -80,7 +91,7 @@ namespace YAF.Core.Services
         /// <param name="userName">Name of the user.</param>
         /// <param name="userID">The user ID.</param>
         /// <param name="doLogin">if set to <c>true</c> [do login].</param>
-        public static void LoginSuccess([NotNull] AuthService authService, [CanBeNull] string userName, [NotNull] int userID, [NotNull] bool doLogin)
+        public void LoginSuccess([NotNull] AuthService authService, [CanBeNull] string userName, [NotNull] int userID, [NotNull] bool doLogin)
         {
             // Add Flag to User that indicates with what service the user is logged in
             BoardContext.Current.GetRepository<User>().UpdateAuthServiceStatus(userID, authService);

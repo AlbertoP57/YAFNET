@@ -400,10 +400,7 @@ namespace YAF.Core.Services.Auth
             out string normalizedUrl,
             out string normalizedRequestParameters)
         {
-            if (token == null)
-            {
-                token = string.Empty;
-            }
+            token ??= string.Empty;
 
             if (consumerKey.IsNotSet())
             {
@@ -476,7 +473,7 @@ namespace YAF.Core.Services.Auth
         /// </returns>
         public string GenerateSignatureUsingHash(string signatureBase, HashAlgorithm hash)
         {
-            return this.ComputeHash(hash, signatureBase);
+            return ComputeHash(hash, signatureBase);
         }
 
         /// <summary>
@@ -563,7 +560,7 @@ namespace YAF.Core.Services.Auth
         /// a Base64 string of the hash value
         /// </returns>
         /// <exception cref="ArgumentNullException">hash Algorithm</exception>
-        private string ComputeHash(HashAlgorithm hashAlgorithm, string data)
+        private static string ComputeHash(HashAlgorithm hashAlgorithm, string data)
         {
             if (hashAlgorithm == null)
             {

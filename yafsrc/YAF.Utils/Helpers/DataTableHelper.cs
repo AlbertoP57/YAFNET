@@ -28,6 +28,8 @@ namespace YAF.Utils.Helpers
     using System;
     using System.Collections.Generic;
     using System.Data;
+    using System.IO;
+    using System.Linq;
 
     using YAF.Types;
     using YAF.Types.Constants;
@@ -38,7 +40,7 @@ namespace YAF.Utils.Helpers
     /// <summary>
     /// The DB helper.
     /// </summary>
-    public static class DBHelper
+    public static class DataTableHelper
     {
         #region Public Methods
 
@@ -145,6 +147,42 @@ namespace YAF.Utils.Helpers
             CodeContracts.VerifyNotNull(createNew, "createNew");
 
             return dataTable.AsEnumerable().Select(createNew);
+        }
+
+        /// <summary>
+        /// The add image files.
+        /// </summary>
+        /// <param name="dataTable">
+        /// The data table.
+        /// </param>
+        /// <param name="files">
+        /// The files.
+        /// </param>
+        /// <param name="folder">
+        /// The folder.
+        /// </param>
+        public static void AddImageFiles(
+            [NotNull] this DataTable dataTable,
+            [NotNull] FileInfo[] files,
+            [NotNull] string folder)
+        {
+            CodeContracts.VerifyNotNull(dataTable, "dataTable");
+            CodeContracts.VerifyNotNull(files, "files");
+            CodeContracts.VerifyNotNull(folder, "folder");
+
+            files.Where(
+                e => e.Extension.Equals(".png", StringComparison.InvariantCultureIgnoreCase)
+                     || e.Extension.Equals(".gif", StringComparison.InvariantCultureIgnoreCase)
+                     || e.Extension.Equals(".jpg", StringComparison.InvariantCultureIgnoreCase) || e.Extension.Equals(
+                         ".svg",
+                         StringComparison.InvariantCultureIgnoreCase)).ForEach(
+                f =>
+                    {
+                        var dr = dataTable.NewRow();
+                        dr["Description"] = f.Name;
+                        dr["FileName"] = $"{BoardInfo.ForumClientFileRoot}{folder}/{f.Name}";
+                        dataTable.Rows.Add(dr);
+                    });
         }
 
         #endregion

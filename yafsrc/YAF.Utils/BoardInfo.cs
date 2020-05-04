@@ -61,7 +61,7 @@ namespace YAF.Utils
         /// <summary>
         /// Gets full URL to the Root of the Forum
         /// </summary>
-        public static string ForumURL => BuildLink.GetLink(ForumPages.forum, true);
+        public static string ForumURL => BuildLink.GetLink(ForumPages.Board, true);
 
         /// <summary>
         /// Gets a value indicating whether this instance is local.
@@ -88,7 +88,7 @@ namespace YAF.Utils
         /// <summary>
         /// Gets the Current YAF Database Version
         /// </summary>
-        public static int AppVersion => 75;
+        public static int AppVersion => 77;
 
         /// <summary>
         /// Gets the Current YAF Application Version
@@ -122,7 +122,7 @@ namespace YAF.Utils
         /// <summary>
         /// Gets the Current YAF Build Date
         /// </summary>
-        public static DateTime AppVersionDate => new DateTime(2020, 04, 19, 03, 00, 00);
+        public static DateTime AppVersionDate => new DateTime(2020, 05, 01, 03, 00, 00);
 
         /// <summary>
         /// Creates a string that is the YAF Application Version from a long value

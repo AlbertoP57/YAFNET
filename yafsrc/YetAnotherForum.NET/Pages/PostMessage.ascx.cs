@@ -36,7 +36,6 @@ namespace YAF.Pages
     using YAF.Configuration;
     using YAF.Core.BaseModules;
     using YAF.Core.BasePages;
-    using YAF.Core.Context;
     using YAF.Core.Extensions;
     using YAF.Core.Helpers;
     using YAF.Core.Model;
@@ -52,6 +51,8 @@ namespace YAF.Pages
     using YAF.Utils;
     using YAF.Utils.Helpers;
     using YAF.Web.Extensions;
+
+    using ListItem = System.Web.UI.WebControls.ListItem;
 
     #endregion
 
@@ -142,7 +143,7 @@ namespace YAF.Pages
             else
             {
                 // new topic -- cancel back to forum
-                BuildLink.Redirect(ForumPages.topics, "f={0}", this.PageContext.PageForumID);
+                BuildLink.Redirect(ForumPages.Topics, "f={0}", this.PageContext.PageForumID);
             }
         }
 
@@ -223,54 +224,6 @@ namespace YAF.Pages
                 return false;
             }
 
-            // Check if the topic name is not too long
-            if (this.PageContext.BoardSettings.MaxWordLength > 0
-                && this.TopicSubjectTextBox.Text.Trim()
-                    .AreAnyWordsOverMaxLength(this.PageContext.BoardSettings.MaxWordLength))
-            {
-                this.PageContext.AddLoadMessage(
-                    this.GetTextFormatted("TOPIC_NAME_WORDTOOLONG", this.PageContext.BoardSettings.MaxWordLength),
-                    MessageTypes.warning);
-
-                try
-                {
-                    this.TopicSubjectTextBox.Text =
-                        this.TopicSubjectTextBox.Text.Substring(this.PageContext.BoardSettings.MaxWordLength)
-                            .Substring(255);
-                }
-                catch (Exception)
-                {
-                    this.TopicSubjectTextBox.Text =
-                        this.TopicSubjectTextBox.Text.Substring(this.PageContext.BoardSettings.MaxWordLength);
-                }
-
-                return false;
-            }
-
-            // Check if the topic description words are not too long
-            if (this.PageContext.BoardSettings.MaxWordLength > 0
-                && this.TopicDescriptionTextBox.Text.Trim()
-                    .AreAnyWordsOverMaxLength(this.PageContext.BoardSettings.MaxWordLength))
-            {
-                this.PageContext.AddLoadMessage(
-                    this.GetTextFormatted("TOPIC_DESCRIPTION_WORDTOOLONG", this.PageContext.BoardSettings.MaxWordLength),
-                    MessageTypes.warning);
-
-                try
-                {
-                    this.TopicDescriptionTextBox.Text =
-                        this.TopicDescriptionTextBox.Text.Substring(this.PageContext.BoardSettings.MaxWordLength)
-                            .Substring(255);
-                }
-                catch (Exception)
-                {
-                    this.TopicDescriptionTextBox.Text =
-                        this.TopicDescriptionTextBox.Text.Substring(this.PageContext.BoardSettings.MaxWordLength);
-                }
-
-                return false;
-            }
-
             if (this.SubjectRow.Visible && this.TopicSubjectTextBox.Text.IsNotSet())
             {
                 this.PageContext.AddLoadMessage(this.GetText("NEED_SUBJECT"), MessageTypes.warning);
@@ -339,7 +292,7 @@ namespace YAF.Pages
         protected override void OnPreRender([NotNull] EventArgs e)
         {
             // setup jQuery and Jquery Ui Tabs.
-            BoardContext.Current.PageElements.RegisterJsBlock(
+            this.PageContext.PageElements.RegisterJsBlock(
                 "GetBoardTagsJs",
                 JavaScriptBlocks.GetBoardTagsJs(this.Tags.ClientID));
 
@@ -366,16 +319,17 @@ namespace YAF.Pages
                     this.GetRepository<Message>().MessageList(this.QuotedMessageId.ToType<int>())
                         .FirstOrDefault();
 
-                if (this.Get<HttpRequestBase>().QueryString.Exists("text"))
+                if (currentMessage != null)
                 {
-                    var quotedMessage =
-                        this.Server.UrlDecode(this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("text"));
+                    if (this.Get<HttpRequestBase>().QueryString.Exists("text"))
+                    {
+                        var quotedMessage =
+                            this.Server.UrlDecode(this.Get<HttpRequestBase>().QueryString.GetFirstOrDefault("text"));
 
-                    currentMessage.Message =
-                        HtmlHelper.StripHtml(HtmlHelper.CleanHtmlString(quotedMessage));
-                }
-                else if (currentMessage != null)
-                {
+                        currentMessage.Message =
+                            HtmlHelper.StripHtml(HtmlHelper.CleanHtmlString(quotedMessage));
+                    }
+
                     if (currentMessage.TopicID.ToType<int>() != this.PageContext.PageTopicID)
                     {
                         BuildLink.AccessDenied();
@@ -454,11 +408,6 @@ namespace YAF.Pages
 
             if (!this.IsPostBack)
             {
-                if (this.PageContext.BoardSettings.EnableTopicDescription)
-                {
-                    this.DescriptionRow.Visible = true;
-                }
-
                 // helper bool -- true if this is a completely new topic...
                 var isNewTopic = this.TopicId == null && this.QuotedMessageId == null
                                   && this.EditMessageId == null;
@@ -531,7 +480,7 @@ namespace YAF.Pages
                     this.PageLinks.AddRoot();
                     this.PageLinks.AddLink(
                         this.PageContext.PageCategoryName,
-                        BuildLink.GetLink(ForumPages.forum, "c={0}", this.PageContext.PageCategoryID));
+                        BuildLink.GetLink(ForumPages.Board, "c={0}", this.PageContext.PageCategoryID));
                 }
 
                 this.PageLinks.AddForum(this.PageContext.PageForumID);
@@ -1027,8 +976,8 @@ namespace YAF.Pages
             }
 
             // Check posts for urls if the user has only x posts
-            if (BoardContext.Current.CurrentUserData.NumPosts
-                <= BoardContext.Current.Get<BoardSettings>().IgnoreSpamWordCheckPostCount &&
+            if (this.PageContext.CurrentUserData.NumPosts
+                <= this.PageContext.Get<BoardSettings>().IgnoreSpamWordCheckPostCount &&
                 !this.PageContext.IsAdmin && !this.PageContext.ForumModeratorAccess)
             {
                 var urlCount = UrlHelper.CountUrls(this.forumEditor.Text);
@@ -1209,7 +1158,7 @@ namespace YAF.Pages
                 }
 
                 // Tell user that his message will have to be approved by a moderator
-                var url = BuildLink.GetLink(ForumPages.topics, "f={0}", this.PageContext.PageForumID);
+                var url = BuildLink.GetLink(ForumPages.Topics, "f={0}", this.PageContext.PageForumID);
 
                 if (this.PageContext.PageTopicID > 0 && this.topic.NumPosts > 1)
                 {
@@ -1344,10 +1293,7 @@ namespace YAF.Pages
                 var attachments = this.GetRepository<Attachment>().Get(a => a.MessageID == currentMessage.MessageID);
 
                 attachments.ForEach(
-                    attach =>
-                        {
-                            this.forumEditor.Text += $" [ATTACH]{attach.ID}[/Attach] ";
-                        });
+                    attach => this.forumEditor.Text += $" [ATTACH]{attach.ID}[/Attach] ");
             }
 
             if (this.forumEditor.UsesHTML && currentMessage.Flags.IsBBCode)
@@ -1379,10 +1325,6 @@ namespace YAF.Pages
             {
                 // allow editing of the topic subject
                 this.TopicSubjectTextBox.Enabled = true;
-                if (this.PageContext.BoardSettings.EnableTopicDescription)
-                {
-                    this.DescriptionRow.Visible = true;
-                }
             }
             else
             {
@@ -1475,8 +1417,6 @@ namespace YAF.Pages
         /// </summary>
         private void InitReplyToTopic()
         {
-            //var topic = this.GetRepository<Topic>().GetById(this.TopicId.ToType<int>());
-
             // Ederon : 9/9/2007 - moderators can reply in locked topics
             if (this.topic.TopicFlags.IsLocked && !this.PageContext.ForumModeratorAccess)
             {

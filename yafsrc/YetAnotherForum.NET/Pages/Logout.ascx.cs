@@ -30,7 +30,6 @@ namespace YAF.Pages
     using System.Web;
     using System.Web.Security;
 
-    using YAF.Core;
     using YAF.Core.BasePages;
     using YAF.Types;
     using YAF.Types.Constants;
@@ -74,7 +73,7 @@ namespace YAF.Pages
 
             this.Get<HttpSessionStateBase>().Abandon();
 
-            BuildLink.Redirect(ForumPages.forum);
+            BuildLink.Redirect(ForumPages.Board);
         }
 
         #endregion
