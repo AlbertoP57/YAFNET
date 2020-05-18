@@ -9,7 +9,7 @@
     <meta id="YafMetaScriptingLanguage" http-equiv="Content-Script-Type" runat="server"
         name="scriptlanguage" content="text/javascript" />
     <meta id="YafMetaStyles" http-equiv="Content-Style-Type" runat="server" name="styles"
-        content="text/css" />
+        content="text/css" />c
    <title>YAF.NET <%# this.IsForumInstalled ? YAF.App_GlobalResources.Install.Upgrade : YAF.App_GlobalResources.Install.Installation %></title>
    <link href="../Content/InstallWizard.min.css" rel="stylesheet" type="text/css" />
 </head>
@@ -440,10 +440,10 @@
                     </div>
                     <div class="form-group">
                         <asp:Label id="Label7" runat="server" 
-                                   AssociatedControlId="Culture">
+                                   AssociatedControlId="Cultures">
                             <%# YAF.App_GlobalResources.Install.Culture %>
                         </asp:Label>
-                        <asp:DropDownList ID="Culture" runat="server" 
+                        <asp:DropDownList ID="Cultures" runat="server" 
                                           CssClass="custom-select" />
                     </div>
                     <div class="form-group">
@@ -522,64 +522,9 @@
                                          Type="Password"
                                          CssClass="form-control"/>
                         </div>
-                        <div class="form-group">
-                            <asp:TextBox runat="server" ID="SecurityQuestion" 
-                                         Placeholder="<%# YAF.App_GlobalResources.Install.SecurityQuestion %>" 
-                                         RenderWrapper="True" 
-                                         LabelText="Security Question"
-                                         CssClass="form-control"/>
-                        </div>
-                        <div class="form-group">
-                            <asp:TextBox runat="server" ID="SecurityAnswer" 
-                                         Placeholder="<%# YAF.App_GlobalResources.Install.SecurityAnswer %>" 
-                                         RenderWrapper="True" 
-                                         LabelText="Security Answer"
-                                         CssClass="form-control"/>
-                        </div>
                     </asp:PlaceHolder>
                 </asp:WizardStep>
-                <asp:WizardStep runat="server" Title="Migrate Users" ID="WizMigrateUsers">
-                    <h4>
-                        <%# YAF.App_GlobalResources.Install.Migrate %>
-                    </h4>
-                    <p>
-                        <asp:Label ID="lblMigrateUsersCount" runat="server" Text="0"></asp:Label>
-                        <%# YAF.App_GlobalResources.Install.MigrateCount %>
-                    </p>
-                    <p class="descriptionText">
-                        <%# YAF.App_GlobalResources.Install.MigrateDesc %>
-                    </p> 
-                    <div class="alert alert-info">
-                        <span class="badge badge-info">
-                            <%# YAF.App_GlobalResources.Install.Note %>
-                        </span> 
-                        <%# YAF.App_GlobalResources.Install.MigrateNote %>
-                    </div>
-                    <asp:CheckBox ID="skipMigration" runat="server" 
-                                  Text="<%# YAF.App_GlobalResources.Install.MigrateSkip %>"
-                                  Visible="False" />
-                </asp:WizardStep>
-                <asp:WizardStep runat="server" Title="Migrating Users..." ID="WizMigratingUsers">
-                    <h4>
-                        <%# YAF.App_GlobalResources.Install.MigrateUsers %>
-                    </h4>
-                    <%# YAF.App_GlobalResources.Install.MigrateUsersText %>
-                    <asp:UpdatePanel ID="LoadingCheckPanel" runat="server">
-                        <ContentTemplate>
-                            <asp:Timer ID="UpdateStatusTimer" runat="server" Interval="5000" OnTick="UpdateStatusTimer_Tick" />
-                            <div style="text-align: center" class="alert alert-info">
-                                <div class="fa-3x">
-                                    <i class="fas fa-spinner fa-pulse"></i>
-                                </div>
-                                <br />
-                                <strong>
-                                    <%# YAF.App_GlobalResources.Install.Migrate %>
-                                </strong>
-                            </div>
-                        </ContentTemplate>
-                    </asp:UpdatePanel>
-                </asp:WizardStep>
-                <asp:WizardStep runat="server" StepType="Finish" Title="Finished" ID="WizFinished">
+            <asp:WizardStep runat="server" StepType="Finish" Title="Finished" ID="WizFinished">
                     <h4>
                         <%# this.IsForumInstalled ? YAF.App_GlobalResources.Install.Upgrade : YAF.App_GlobalResources.Install.Setup%> <%# YAF.App_GlobalResources.Install.Finished %>
                     </h4>
@@ -677,7 +622,7 @@
             <StartNavigationTemplate>
                     <YAF:ThemeButton ID="StartNextButton" runat="server"
                                      Icon="arrow-alt-circle-right"
-                                     Type="Secondary"
+                                     Type="Primary"
                                      CommandName="MoveNext" 
                                      Text="<%# YAF.App_GlobalResources.Install.Next %>"/>
             </StartNavigationTemplate>
